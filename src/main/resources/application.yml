@@ -1,0 +1,25 @@
+spring: #띄어쓰기 없음
+  thymeleaf:
+  prefix: classpath:/templates/
+  suffix: .html
+  datasource: #띄어쓰기 2칸
+    url: jdbc:h2:tcp://localhost/~/membership #4칸
+    username: jukury
+    password: 26289745
+    driver-class-name: org.h2.Driver
+
+  #  h2:
+  #    console:
+  #      path: /h2console
+  #      enabled: true
+  jpa:
+    hibernate:
+      hbm2ddl.auto: update # 새로 추가
+#       ddl-auto: create # 기존의 것 주석처리
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging.level:
+  ore.hibernate.SQL: debug
