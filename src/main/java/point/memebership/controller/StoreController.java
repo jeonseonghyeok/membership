@@ -9,7 +9,9 @@ import point.memebership.domain.Store;
 import point.memebership.service.PointService;
 import point.memebership.service.StoreService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,8 +28,8 @@ public class StoreController {
         return store;
     }
 /**
- * POST 방식으로 JSON 형식을 받을 경우
- * @param requestBody
+ * 기능 : 포인트 적립
+ * 구현 : skey를 path로 사용하며 PointAcmForm 데이터가 전송되면 적립한다.
 */
     @RequestMapping("/pointAcm/{skey}")
     @ResponseBody
@@ -38,6 +40,12 @@ public class StoreController {
         return pointService.pointACM(skey,pointAcmForm);
     }
 
+    /**
+     *
+     * @param skey
+     * @param phone
+     * @return 파라미터가 없으면 전체, 있다면 해당 고객것만 리턴
+     */
     @RequestMapping("/pointSearch/{skey}")
     @ResponseBody
     public List<PointAccumulate> pointSearch(@PathVariable(name = "skey") Integer skey,
@@ -45,12 +53,23 @@ public class StoreController {
 
         log.info("pointSearch : " + phone);
         if(phone == null){
-            return pointService.pointAcmSearch(skey);
+            return pointService.SearchAcm(skey);
         }
         else{
 
             return null;
         }
        // return pointService.pointACM(skey,pointAcmForm);
+    }
+    @GetMapping("/SearchToCustomer/{skey}")
+    @ResponseBody
+    public Map SearchToCustomer(@PathVariable(name = "skey") Integer skey,
+                                @RequestParam String customer_phone) {
+
+        log.info("SearchToCustomer : " + customer_phone);
+        Map resultMap = new HashMap<>();
+        resultMap.put("totalPoint",pointService.SearchTotalAcm(skey,customer_phone));
+        return resultMap;
+
     }
 }

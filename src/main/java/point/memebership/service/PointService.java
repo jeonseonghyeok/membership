@@ -33,14 +33,18 @@ public class PointService {
             return acmRepository.acm_create(store,optCustomer.get(), pointAcmForm);
         }
         else{
-            log.info("customer is not find");
+            log.info("customer is not find, so new customer's info saved");
             Customer customer = customerRepository.save(Customer.createCustomer(pointAcmForm.getCustomer_phone()));
             return acmRepository.acm_create(store, customer, pointAcmForm);
         }
     }
-    public List<PointAccumulate> pointAcmSearch(long skey){
+    public List<PointAccumulate> SearchAcm(long skey){
         Store store = storeRepository.findOne(skey);
         return acmRepository.findList(store,0,10);
     }
-
+    public int SearchTotalAcm(long skey,String phone){
+        Store store = storeRepository.findOne(skey);
+        Customer customer = customerRepository.findOneByphoneNumber(phone).get();
+        return acmRepository.findTotalAcmToCustomer(store,customer);
+    }
 }
