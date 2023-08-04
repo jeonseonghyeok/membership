@@ -61,15 +61,12 @@ public class StoreController {
         }
        // return pointService.pointACM(skey,pointAcmForm);
     }
-    @GetMapping("/SearchToCustomer/{skey}")
+    @GetMapping("/SearchCustomerInfo/{skey}")
     @ResponseBody
     public Map SearchToCustomer(@PathVariable(name = "skey") Integer skey,
                                 @RequestParam String customer_phone) {
 
-        log.info("SearchToCustomer : " + customer_phone);
-        Map resultMap = new HashMap<>();
-        resultMap.put("totalPoint",pointService.SearchTotalAcm(skey,customer_phone));
-        return resultMap;
+        return storeService.SearchCustomerInfo(skey,customer_phone);
 
     }
 }

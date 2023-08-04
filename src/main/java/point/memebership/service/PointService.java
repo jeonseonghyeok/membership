@@ -42,9 +42,9 @@ public class PointService {
         Store store = storeRepository.findOne(skey);
         return acmRepository.findList(store,0,10);
     }
-    public int SearchTotalAcm(long skey,String phone){
-        Store store = storeRepository.findOne(skey);
-        Customer customer = customerRepository.findOneByphoneNumber(phone).get();
-        return acmRepository.findTotalAcmToCustomer(store,customer);
-    }
+//    public int SearchTotalAcm(long skey,String phone){
+//        Store store = storeRepository.findOne(skey);
+//        Customer customer = customerRepository.findOneByphoneNumber(phone).get();
+//        return acmRepository.findTotalAcmToCustomer(store,customer);
+//    }
 }
