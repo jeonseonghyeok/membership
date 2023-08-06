@@ -40,7 +40,7 @@ public class PointService {
     }
     public List<PointAccumulate> SearchAcm(long skey){
         Store store = storeRepository.findOne(skey);
-        return acmRepository.findList(store,0,10);
+        return acmRepository.findAcmList(store,0,10);
     }
 //    public int SearchTotalAcm(long skey,String phone){
 //        Store store = storeRepository.findOne(skey);

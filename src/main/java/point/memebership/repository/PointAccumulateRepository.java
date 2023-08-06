@@ -1,9 +1,7 @@
 package point.memebership.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import point.memebership.controller.PointAcmForm;
 import point.memebership.domain.Customer;
 import point.memebership.domain.PointAccumulate;
@@ -15,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -30,7 +29,7 @@ public class PointAccumulateRepository {
         return pointAcm.getAcm_key();
     }
 
-    public List<PointAccumulate> findList(Store store, int offset, int limit) {
+    public List<PointAccumulate> findAcmList(Store store, int offset, int limit) {
         List<PointAccumulate> pointAcmList;
         pointAcmList = em.createQuery("select acm from PointAccumulate acm where acm.store = :store", PointAccumulate.class)
                 .setParameter("store", store)
@@ -40,8 +39,8 @@ public class PointAccumulateRepository {
         return pointAcmList;
     }
 
-    public int findTotalAcmToCustomer(Store store, Customer customer) {
-        int totalAcm = 0;
+    public int findTotalRmnOfCustomer(Store store, Customer customer) {
+        int totalAcm = -1;
         try {
             Query query = em.createQuery(
                     "select COALESCE(SUM(acm.rmn_point),0) " +
@@ -61,5 +60,20 @@ public class PointAccumulateRepository {
             totalAcm = 0;
         }
         return totalAcm;
+    }
+
+    public Optional<PointAccumulate> findLatestAcm(Store store, Customer customer) {
+        Optional<PointAccumulate> optAcm = null;
+        optAcm = em.createQuery(
+                        "select acm " +
+                                "from PointAccumulate acm " +
+                                "where acm.store = :store " +
+                                "and acm.customer = : customer " +
+                                "order by acm.create_date desc ", PointAccumulate.class)
+                .setParameter("store", store)
+                .setParameter("customer", customer)
+                .setMaxResults(1)
+                .getResultStream().findAny();
+        return optAcm;
     }
 }
