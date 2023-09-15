@@ -25,8 +25,8 @@ public class PointService {
     private final CustomerRepository customerRepository;
 
     @Transactional
-    public Long pointACM(long skey, PointAcmForm pointAcmForm){
-        Store store = storeRepository.findOne(skey);
+    public Long pointACM(PointAcmForm pointAcmForm){
+        Store store = storeRepository.findOne(pointAcmForm.getSkey());
         Optional<Customer> optCustomer = customerRepository.findOneByphoneNumber(pointAcmForm.getCustomer_phone());//Customer.createCustomer(pointAcmForm.getCustomer_phone());
 
         if(!optCustomer.isEmpty()) {

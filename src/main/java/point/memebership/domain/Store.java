@@ -5,11 +5,14 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+
+import org.springframework.security.core.GrantedAuthority;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Slf4j
 @Entity
 @Getter @Setter
 @Table(name = "store")
@@ -21,9 +24,12 @@ public class Store {
     @Getter
     private Long skey;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String store_id;
-
+    
+    @Column(nullable = false)
+    private String store_pw;
+           
     @Column(nullable = false)
     private String name;
 
